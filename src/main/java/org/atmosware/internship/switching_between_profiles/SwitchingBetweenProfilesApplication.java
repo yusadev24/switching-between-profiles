@@ -1,20 +1,13 @@
 package org.atmosware.internship.switching_between_profiles;
 
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.core.env.AbstractEnvironment;
-import org.springframework.core.env.Environment;
+import org.springframework.cloud.config.server.EnableConfigServer;
 
 @SpringBootApplication
-public class SwitchingBetweenProfilesApplication implements CommandLineRunner {
 
+public class SwitchingBetweenProfilesApplication {
 
-    private final Environment environment;
-
-    public SwitchingBetweenProfilesApplication(Environment environment) {
-        this.environment = environment;
-    }
 
     public static void main(String[] args) {
         SpringApplication.run(SwitchingBetweenProfilesApplication.class, args);
@@ -22,9 +15,4 @@ public class SwitchingBetweenProfilesApplication implements CommandLineRunner {
 
 
 
-    @Override
-    public void run(String... args) throws Exception {
-        for (String profile: environment.getActiveProfiles()){
-        System.out.println(profile);}
-    }
 }

@@ -2,6 +2,7 @@ package org.atmosware.internship.switching_between_profiles.controller;
 
 import org.atmosware.internship.switching_between_profiles.config.AppConfig;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.endpoint.RefreshEndpoint;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -20,6 +21,9 @@ public class PropertyController {
     private AppConfig appConfig;
 
     @Autowired
+    RefreshEndpoint refreshEndpoint;
+
+    @Autowired
     private RestTemplate restTemplate;
     //Environment
 
@@ -33,10 +37,9 @@ public class PropertyController {
     @PostMapping("/change-profile")
     public String changeProfile(@RequestParam String profile){
         System.setProperty("spring.profiles.active", profile);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> requestEntity = new HttpEntity<>(headers);
-        restTemplate.exchange("http://localhost:8080/actuator/refresh", HttpMethod.POST, requestEntity, String.class);
+
+        refreshEndpoint.refresh();
+
         for (String profile2: environment.getActiveProfiles()){
             System.out.println(profile2);}
         return "Profile changed to: " + profile;
